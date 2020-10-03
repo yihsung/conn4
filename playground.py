@@ -1,7 +1,7 @@
 import numpy as np
 import random
 
-class Environ():
+class Env():
 	def __init__(self, n, m, k=4):
 		self.n, self.m, self.k = n, m, k
 		self.c = 0 # count of moves
@@ -9,7 +9,9 @@ class Environ():
 		self.board = [[0]*m for _ in range(n)] # init
 		
 		self.state = (0, )*m
-		self.actions = [0]*m # possible col index
+
+		self.act_ind = [0]*m # possible col index
+		self.actions = [[i, self.act_ind[i]] for i in range(self.m)]
 
 
 	def __str__(self):
@@ -64,13 +66,13 @@ class Environ():
 
 	def step(self, act):
 		# put a stone at col act
-		i, j = self.actions[act], act
+		i, j = self.act_ind[act], act
 
 		b = self.c % 2 # b: stone bit
 		self.board[i][j] = b + 1 # grid = 0: empty, 1: black, 2: white
 		
 		# n means no more room for stone
-		self.actions[act] = min(self.actions[act]+1, self.n) 
+		self.act_ind[act] = min(self.act_ind[act]+1, self.n) 
 
 		self.state = self.state[:j] + (self._i_state(j),) + self.state[j+1:]
 
@@ -99,8 +101,12 @@ class Environ():
 				
 				self.c += i # update moves
 
-				self.actions[j] = i # update action index
+				self.act_ind[j] = i # update action index
 
 class Agent():
 	def __init__(self):
 		return
+
+	def move(self, env):
+		return 0		
+
