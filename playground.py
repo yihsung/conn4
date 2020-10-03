@@ -28,6 +28,9 @@ class Env():
 		B = [0]*7 # B: buffer
 
 		for p, (u, v) in enumerate([(1, -1), (0, -1), (-1, -1), (-1, 0), (-1, 1), (0, 1), (1, 1)]): # check 7 directions
+			if i+u >= self.n or i+u < 0 or j+v >= self.m or j+v < 0:
+				continue
+
 			s  = self.board[i+u][j+v] # s: sample
 			if not s: # no stone
 				continue
@@ -57,7 +60,7 @@ class Env():
 		b = 1 # start from 1
 		
 		i = 0
-		while self.board[i][j]:
+		while i<self.n and self.board[i][j]:
 			b = (b << 1) + (self.board[i][j]-1)
 			i += 1
 
@@ -102,11 +105,19 @@ class Env():
 				self.c += i # update moves
 
 				self.act_ind[j] = i # update action index
+			
+			self.actions = [[i, self.act_ind[i]] for i in range(self.m)]
+
 
 class Agent():
 	def __init__(self):
 		return
+	
+
+	def _random_move(self, env):
+		return random.choice(env.actions)
+		
 
 	def move(self, env):
-		return 0		
+		return self._random_move(env)
 
