@@ -43,7 +43,7 @@ while not g1.end:
 
 	turn = 1 - turn
 
-print(g1, )
+print(g1)
 print(2-turn) # winner = 1 - turn + 1
 
 	
