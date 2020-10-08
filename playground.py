@@ -1,5 +1,4 @@
 import numpy as np
-import random
 
 class Env():
 	def __init__(self, n, m, k=4):
@@ -115,15 +114,4 @@ class Env():
 			self.actions = [i for i in range(self.m)]
 
 
-class Agent():
-	def __init__(self):
-		return
-	
-
-	def _random_move(self, env):
-		return random.choice(env.actions)
-		
-
-	def move(self, env):
-		return self._random_move(env)
 
