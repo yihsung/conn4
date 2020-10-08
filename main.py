@@ -1,10 +1,11 @@
 import playground
+import agent
 
 b1 = ([[1, 2, 1, 2, 2, 1, 1], [2, 0, 0, 0, 0, 0, 0], 
 	   [1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]) 
 
 g1 = playground.Env(6, 7)
-p1, p2 = playground.Agent(), playground.Agent()
+p1, p2 = agent.Agent(), agent.Agent()
 
 '''''
 # test1
