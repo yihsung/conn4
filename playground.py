@@ -8,18 +8,17 @@ class Env():
 
 		self.board = [[0]*m for _ in range(n)] # init
 		
+		self.end = False
+		
 		self.state = (0, )*m
 
 		self.act_ind = [0]*m # possible col index
-		self.actions = [[i, self.act_ind[i]] for i in range(self.m)]
+		self.actions = [i for i in range(self.m)]
 
 
 	def __str__(self):
 		#return str(np.array(self.board[::-1])) # reverse to match the actual game
 		return str(np.array(self.board)) 
-
-	def _take_act(self):
-		return random.choice(range(self.m))	
 
 
 	def _reward(self, i, j):
@@ -50,7 +49,7 @@ class Env():
 
 		# deal with the case that the stone is in the middle of the line
 		for p in range(3):
-			if B[p] + B[p+4] + 1 >= self.k: 
+			if B[p] + B[p+4] + 1 >= self.k: # may over count if the last move is the end of conn 4, but that is ok
 				c += self.m * self.n
 
 		return c
@@ -73,17 +72,24 @@ class Env():
 
 		b = self.c % 2 # b: stone bit
 		self.board[i][j] = b + 1 # grid = 0: empty, 1: black, 2: white
+
 		
 		# n means no more room for stone
-		self.act_ind[act] = min(self.act_ind[act]+1, self.n) 
+		if self.act_ind[act] == self.n - 1:
+			self.actions = [x for x in self.actions if x != act] # remove act from action space
+
+		self.act_ind[act] += 1
 
 		self.state = self.state[:j] + (self._i_state(j),) + self.state[j+1:]
 
 		self.c += 1
 
-		r = self._reward(i, j)
+		r = self._reward(i, j) # find reward
+		
+		self.end = r >= self.n*self.m # find if game ends
 
-		return r, r >= self.n*self.m, {} 
+
+		return r, self.end, {} 
 		
 
 	def reset(self, k=4, board=None):
@@ -93,9 +99,9 @@ class Env():
 			self.n, self.m, self.k = len(board), len(board[0]), k
 			
 			self.board = board
-
-			self.state = tuple(self._i_state(i) for i in range(self.m))
 			
+			self.end = False
+
 			self.c = 0
 			for j in range(self.m):
 				i = 0
@@ -106,7 +112,7 @@ class Env():
 
 				self.act_ind[j] = i # update action index
 			
-			self.actions = [[i, self.act_ind[i]] for i in range(self.m)]
+			self.actions = [i for i in range(self.m)]
 
 
 class Agent():
