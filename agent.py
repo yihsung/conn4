@@ -27,7 +27,9 @@ class Agent():
 			F = open(qfile, 'w')
 
 			for x in self.Q:
-				t = " ".join(map(str, x[0])) + ", " + str(x[1])
+				# seprate s by " "; seprate s and a by ","; seprate (s,a) and Q by ":"
+				t = " ".join(map(str, x[0])) + ", " + str(x[1]) 
+
 				F.write("%s:%f\n" % (t, self.Q[x]))
 
 		finally:
@@ -46,7 +48,7 @@ class Agent():
 				s = tuple(int(x) for x in s.split(" "))
 				a = int(a)
 
-				self.Q[(s, a)] = float(data[1][:-2])
+				self.Q[(s, a)] = float(data[1][:-2]) # [:-2] to remove the next line char, '\n'
 		F.close()
 		return 
 	
@@ -69,7 +71,7 @@ class Agent():
 
 	def _qupdate(self, s1, a1, s2, acts, reward):
 		if not acts:
-			print("!")
+			print("!") # no more valid actions, i.e. the board is full
 			return 1
 
 		M = max(self.Q[(s2, a)] for a in acts)

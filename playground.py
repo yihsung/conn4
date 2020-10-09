@@ -85,7 +85,7 @@ class Env():
 
 		r = self._reward(i, j) # find reward
 		
-		self.end = r >= self.n*self.m # find if game ends
+		self.end = (r >= self.n*self.m) or (not self.actions) # find if game ends
 
 
 		return r, self.end, {} # return reward, if end, info for debug
