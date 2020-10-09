@@ -36,6 +36,8 @@ print("----")
 player = [agent.Agent(), agent.Agent()]
 episodes = 100
 
+player[0].load()
+
 for _ in range(episodes):
 	turn = 0
 	g1.reset()
@@ -49,10 +51,11 @@ for _ in range(episodes):
 		s2 = g1.state
 		acts = g1.actions
 
-		player[turn].update(s1, a1, s2, acts, reward)
+		if player[turn].update(s1, a1, s2, acts, reward):
+			print(g1)
 
-		print(g1.state)
-		print(player[turn].Q[(s1, a1)])
+		#print(g1.state)
+		#print(player[turn].Q[(s1, a1)])
 		turn = 1 - turn
 
 	print(g1)

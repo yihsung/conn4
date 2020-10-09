@@ -27,7 +27,8 @@ class Agent():
 			F = open(qfile, 'w')
 
 			for x in self.Q:
-				F.write("%s %f\n" % (x, self.Q[x]))
+				t = " ".join(map(str, x[0])) + ", " + str(x[1])
+				F.write("%s:%f\n" % (t, self.Q[x]))
 
 		finally:
 			F.close()
@@ -36,6 +37,17 @@ class Agent():
 
 
 	def _import_Qval(self):
+		with open(qfile, 'r') as F:
+			for line in F:
+				data = line.split(":")
+
+				s, a = data[0].split(",")
+				
+				s = tuple(int(x) for x in s.split(" "))
+				a = int(a)
+
+				self.Q[(s, a)] = float(data[1][:-2])
+		F.close()
 		return 
 	
 
@@ -56,11 +68,15 @@ class Agent():
 	
 
 	def _qupdate(self, s1, a1, s2, acts, reward):
+		if not acts:
+			print("!")
+			return 1
+
 		M = max(self.Q[(s2, a)] for a in acts)
 
 		self.Q[(s1, a1)] += self.alpha * (reward + self.gamma * M - self.Q[(s1, a1)])
 
-		return
+		return 0
 	
 
 	def update(self, s1, a1, s2, acts, reward):
@@ -70,6 +86,11 @@ class Agent():
 	def move(self, env):
 		#return self._random_move(env)
 		return self._qlearning_move(env)
+
+
+	def load(self):
+		self._import_Qval()
+		return
 
 	def record(self):
 		self._export_Qval()
