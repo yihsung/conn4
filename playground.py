@@ -88,7 +88,7 @@ class Env():
 		self.end = r >= self.n*self.m # find if game ends
 
 
-		return r, self.end, {} 
+		return r, self.end, {} # return reward, if end, info for debug
 		
 
 	def reset(self, k=4, board=None):

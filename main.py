@@ -33,19 +33,29 @@ print(g1)
 
 # random game
 print("----")
-g1.reset()
+player = [agent.Agent(), agent.Agent()]
+episodes = 100
 
-turn = 0
-while not g1.end:
-	if turn == 0:
-		g1.step(p1.move(g1))
-	else:
-		g1.step(p2.move(g1))
+for _ in range(episodes):
+	turn = 0
+	g1.reset()
 
-	turn = 1 - turn
+	while not g1.end:
+		s1 = g1.state
+		a1 = player[turn].move(g1)
 
-print(g1)
-print(2-turn) # winner = 1 - turn + 1
+		reward, _, __ = g1.step(a1)
+		
+		s2 = g1.state
+		acts = g1.actions
 
-	
+		player[turn].update(s1, a1, s2, acts, reward)
 
+		print(g1.state)
+		print(player[turn].Q[(s1, a1)])
+		turn = 1 - turn
+
+	print(g1)
+	print(2-turn) # winner = 1 - turn + 1
+
+player[0].record()
