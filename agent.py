@@ -8,7 +8,7 @@ qfile = "./Qvals/q_6x7.txt"
 class Agent():
 	Q = collections.defaultdict(int) # Q matrix
 
-	def __init__(self, e=0.1, a=0.5, g=0.9):	
+	def __init__(self, e=0.1, a=0.5, g=0.99):	
 		self.epsilon = e # epsilon: for epsilon-greedy policy
 		
 		self.alpha = a # learning rate/average coefficient
