@@ -34,7 +34,9 @@ print(g1)
 # random game
 print("----")
 player = [agent.Agent(), agent.Agent()]
-episodes = 100
+episodes = 100000
+
+player[0].load() # load Q-val
 
 for _ in range(episodes):
 	turn = 0
@@ -49,13 +51,15 @@ for _ in range(episodes):
 		s2 = g1.state
 		acts = g1.actions
 
-		player[turn].update(s1, a1, s2, acts, reward)
+		# if update fails, print out the board
+		if player[turn].update(s1, a1, s2, acts, reward):
+			print(g1)
 
-		print(g1.state)
-		print(player[turn].Q[(s1, a1)])
+		#print(g1.state)
+		#print(player[turn].Q[(s1, a1)])
 		turn = 1 - turn
 
 	print(g1)
 	print(2-turn) # winner = 1 - turn + 1
 
-player[0].record()
+player[0].record() # record Q-val

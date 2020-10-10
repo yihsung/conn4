@@ -16,8 +16,8 @@ class Env():
 
 
 	def __str__(self):
-		#return str(np.array(self.board[::-1])) # reverse to match the actual game
-		return str(np.array(self.board)) 
+		return str(np.array(self.board[::-1])) # reverse to match the actual game
+		#return str(np.array(self.board)) 
 
 
 	def _reward(self, i, j):
@@ -85,7 +85,7 @@ class Env():
 
 		r = self._reward(i, j) # find reward
 		
-		self.end = r >= self.n*self.m # find if game ends
+		self.end = (r >= self.n*self.m) or (not self.actions) # find if game ends
 
 
 		return r, self.end, {} # return reward, if end, info for debug
