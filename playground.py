@@ -44,12 +44,18 @@ class Env():
 			B[p] = (k-1) * [-1, 1][s == t]
 
 			if k == self.k and s == t: # winning bonus!
-				c += self.m * self.n
+				c += self.m * self.n * 2
+			elif k == self.k-1: 
+				if s != t: 
+					c += (self.m * self.n) // 4 # block bonus
+				else:
+					c += (self.m * self.n) // 2 # almost win bonus
+			
 
 		# deal with the case that the stone is in the middle of the line
 		for p in range(3):
 			if B[p] + B[p+4] + 1 >= self.k: # may over count if the last move is the end of conn 4, but that is ok
-				c += self.m * self.n
+				c += self.m * self.n * 2
 
 		return c
 
@@ -85,7 +91,7 @@ class Env():
 
 		r = self._reward(i, j) # find reward
 		
-		self.end = (r >= self.n*self.m) or (not self.actions) # find if game ends
+		self.end = (r >= self.n*self.m*2) or (not self.actions) # find if game ends
 
 
 		return r, self.end, {} # return reward, if end, info for debug
